@@ -17,6 +17,7 @@ namespace project_hospital_management_system.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -34,9 +35,9 @@ namespace project_hospital_management_system.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -55,8 +56,11 @@ namespace project_hospital_management_system.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public async Task<ActionResult> Login(string returnUrl)
         {
+            // Ensure admin account exists
+            await EnsureAdminAccountExists();
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -73,21 +77,57 @@ namespace project_hospital_management_system.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            try
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        // Update LastLoginDate
+                        var user = await UserManager.FindByEmailAsync(model.Email);
+                        if (user != null)
+                        {
+                            user.LastLoginDate = DateTime.Now;
+                            await UserManager.UpdateAsync(user);
+
+                            // Redirect based on role
+                            if (await UserManager.IsInRoleAsync(user.Id, ApplicationRoles.Admin))
+                            {
+                                return RedirectToAction("Dashboard", "Admin");
+                            }
+                            else if (await UserManager.IsInRoleAsync(user.Id, ApplicationRoles.Doctor))
+                            {
+                                return RedirectToAction("Index", "DoctorDashboard");
+                            }
+                            else if (await UserManager.IsInRoleAsync(user.Id, ApplicationRoles.Patient))
+                            {
+                                return RedirectToAction("Index", "PatientDashboard");
+                            }
+                        }
+
+                        return RedirectToLocal(returnUrl);
+
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt. Please check your email and password.");
+                        return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                System.Diagnostics.Debug.WriteLine("Error in Login: " + ex.Message);
+                ModelState.AddModelError("", "An error occurred during login. Please try again.");
+                return View(model);
             }
         }
 
@@ -116,9 +156,9 @@ namespace project_hospital_management_system.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
+            // The following code protects for brute force attacks against the two factor codes.
+            // If a user enters incorrect codes for a specified amount of time then the user account
+            // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
@@ -151,21 +191,111 @@ namespace project_hospital_management_system.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    // Check if the email is admin@gmail.com - only system can create admin
+                    if (model.Email.ToLower() == "admin@gmail.com")
+                    {
+                        ModelState.AddModelError("", "This email is reserved for system administrator. Please use a different email address.");
+                        return View(model);
+                    }
 
-                    return RedirectToAction("Index", "Home");
+                    using (var transaction = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        // Create the user with additional properties
+                        var user = new ApplicationUser
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            DateCreated = DateTime.Now,
+                            IsActive = true
+                        };
+
+                        // Create the user account
+                        var result = await UserManager.CreateAsync(user, model.Password);
+
+                        if (result.Succeeded)
+                        {
+                            // Add user to the selected role
+                            await UserManager.AddToRoleAsync(user.Id, model.SelectedRole);
+
+                            // Create associated entity based on role
+                            if (model.SelectedRole == ApplicationRoles.Doctor)
+                            {
+                                var doctor = new Doctor
+                                {
+                                    Name = $"{model.FirstName} {model.LastName}",
+                                    Specialization = "General", // Default value, can be updated later
+                                    Phone = "Not provided" // Default value, can be updated later
+                                };
+
+                                db.Doctors.Add(doctor);
+                                await db.SaveChangesAsync();
+
+                                // Link the doctor to the user
+                                user.DoctorId = doctor.DoctorId;
+                                await UserManager.UpdateAsync(user);
+                            }
+                            else if (model.SelectedRole == ApplicationRoles.Patient)
+                            {
+                                var patient = new Patient
+                                {
+                                    Name = $"{model.FirstName} {model.LastName}",
+                                    Gender = "Not specified", // Default value, can be updated later
+                                    DateOfBirth = DateTime.Now.AddYears(-30), // Default value, can be updated later
+                                    Phone = "Not provided", // Default value, can be updated later
+                                    Address = "Not provided" // Default value, can be updated later
+                                };
+
+                                db.Patients.Add(patient);
+                                await db.SaveChangesAsync();
+
+                                // Link the patient to the user
+                                user.PatientId = patient.PatientId;
+                                await UserManager.UpdateAsync(user);
+                            }
+
+                            // Sign in the user
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                            // Update LastLoginDate
+                            user.LastLoginDate = DateTime.Now;
+                            await UserManager.UpdateAsync(user);
+
+                            transaction.Complete();
+
+                            // Redirect based on role
+                            switch (model.SelectedRole)
+                            {
+                                case ApplicationRoles.Doctor:
+                                    return RedirectToAction("Index", "DoctorDashboard");
+                                case ApplicationRoles.Patient:
+                                    return RedirectToAction("Index", "PatientDashboard");
+                                case ApplicationRoles.Nurse:
+                                case ApplicationRoles.Receptionist:
+                                case ApplicationRoles.Accountant:
+                                    // For now, redirect to home page
+                                    return RedirectToAction("Index", "Home");
+                                default:
+                                    return RedirectToAction("Index", "Home");
+                            }
+                        }
+
+                        AddErrors(result);
+                    }
                 }
-                AddErrors(result);
+                catch (Exception ex)
+                {
+                    // Log the error
+                    System.Diagnostics.Debug.WriteLine("Error in Register: " + ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                    }
+                    ModelState.AddModelError("", "An error occurred during registration. Please try again.");
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -212,7 +342,7 @@ namespace project_hospital_management_system.Controllers
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -418,6 +548,11 @@ namespace project_hospital_management_system.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+
+                if (db != null)
+                {
+                    db.Dispose();
+                }
             }
 
             base.Dispose(disposing);
@@ -450,6 +585,62 @@ namespace project_hospital_management_system.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        // Helper method to ensure admin account exists
+        private async Task EnsureAdminAccountExists()
+        {
+            try
+            {
+                // Check if admin account exists
+                var adminUser = await UserManager.FindByEmailAsync("admin@gmail.com");
+
+                if (adminUser == null)
+                {
+                    // Create admin role if it doesn't exist
+                    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+                    if (!roleManager.RoleExists(ApplicationRoles.Admin))
+                    {
+                        var adminRole = new IdentityRole(ApplicationRoles.Admin);
+                        await roleManager.CreateAsync(adminRole);
+                    }
+
+                    // Create admin user
+                    adminUser = new ApplicationUser
+                    {
+                        UserName = "admin@gmail.com",
+                        Email = "admin@gmail.com",
+                        FirstName = "System",
+                        LastName = "Administrator",
+                        DateCreated = DateTime.Now,
+                        LastLoginDate = DateTime.Now,
+                        IsActive = true
+                    };
+
+                    // Admin password must meet the requirements: at least 6 characters, with uppercase, lowercase, digit, and non-alphanumeric
+                    string adminPassword = "Admin12345678";
+                    var result = await UserManager.CreateAsync(adminUser, adminPassword);
+
+                    if (result.Succeeded)
+                    {
+                        // Add admin user to Admin role
+                        await UserManager.AddToRoleAsync(adminUser.Id, ApplicationRoles.Admin);
+                        System.Diagnostics.Debug.WriteLine("Admin account created successfully.");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to create admin account: " + string.Join(", ", result.Errors));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error ensuring admin account exists: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+            }
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

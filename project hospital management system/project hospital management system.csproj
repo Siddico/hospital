@@ -175,14 +175,25 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Appointment.cs" />
+    <Compile Include="Models\DashboardStatistic.cs" />
     <Compile Include="Models\DatabaseInitializer.cs" />
+    <Compile Include="Models\Doctor.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MedicalRecord.cs" />
+    <Compile Include="Models\Medication.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Prescription.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ErrorHandling.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\RoleInitializer.cs" />
+    <Compile Include="ViewModels\DashboardViewModels.cs" />
+    <Compile Include="Filters\AdminAuthorizationFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -220,6 +231,8 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\AccessDenied.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -247,6 +260,46 @@
     <Content Include="Views\Patient\Edit.cshtml" />
     <Content Include="Views\Patient\Details.cshtml" />
     <Content Include="Views\Patient\Delete.cshtml" />
+    <Content Include="Views\Doctor\Index.cshtml" />
+    <Content Include="Views\Doctor\Create.cshtml" />
+    <Content Include="Views\Doctor\Edit.cshtml" />
+    <Content Include="Views\Doctor\Details.cshtml" />
+    <Content Include="Views\Doctor\Delete.cshtml" />
+    <Content Include="Views\Appointment\Index.cshtml" />
+    <Content Include="Views\Appointment\Create.cshtml" />
+    <Content Include="Views\Appointment\Edit.cshtml" />
+    <Content Include="Views\Appointment\Details.cshtml" />
+    <Content Include="Views\Appointment\Delete.cshtml" />
+    <Content Include="Views\MedicalRecord\Index.cshtml" />
+    <Content Include="Views\MedicalRecord\Create.cshtml" />
+    <Content Include="Views\MedicalRecord\Edit.cshtml" />
+    <Content Include="Views\MedicalRecord\Details.cshtml" />
+    <Content Include="Views\MedicalRecord\Delete.cshtml" />
+    <Content Include="Views\MedicalRecord\PatientRecords.cshtml" />
+    <Content Include="Views\Medication\Index.cshtml" />
+    <Content Include="Views\Medication\Create.cshtml" />
+    <Content Include="Views\Medication\Edit.cshtml" />
+    <Content Include="Views\Medication\Details.cshtml" />
+    <Content Include="Views\Medication\Delete.cshtml" />
+    <Content Include="Views\Prescription\Index.cshtml" />
+    <Content Include="Views\Prescription\Create.cshtml" />
+    <Content Include="Views\Prescription\Edit.cshtml" />
+    <Content Include="Views\Prescription\Details.cshtml" />
+    <Content Include="Views\Prescription\Delete.cshtml" />
+    <Content Include="Views\Prescription\PatientPrescriptions.cshtml" />
+    <Content Include="Views\Invoice\Index.cshtml" />
+    <Content Include="Views\Invoice\Create.cshtml" />
+    <Content Include="Views\Invoice\Edit.cshtml" />
+    <Content Include="Views\Invoice\Details.cshtml" />
+    <Content Include="Views\Invoice\Delete.cshtml" />
+    <Content Include="Views\Invoice\PatientInvoices.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\UserManagement.cshtml" />
+    <Content Include="Views\Admin\RoleManagement.cshtml" />
+    <Content Include="Views\Admin\SystemLogs.cshtml" />
+    <Content Include="Views\Admin\SystemSettings.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\PatientDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

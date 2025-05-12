@@ -51,9 +51,11 @@ namespace project_hospital_management_system.Migrations
                     FirstName = "System",
                     LastName = "Administrator",
                     DateCreated = DateTime.Now,
+                    LastLoginDate = DateTime.Now,
                     IsActive = true
                 };
 
+                // Admin password must meet the requirements: at least 6 characters, with uppercase, lowercase, digit, and non-alphanumeric
                 string adminPassword = "Admin12345678";
                 var result = userManager.Create(adminUser, adminPassword);
 

@@ -1,4 +1,5 @@
 ﻿﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -50,6 +51,21 @@ namespace project_hospital_management_system.Models
                 if (DateOfBirth.Date > today.AddYears(-age)) age--;
                 return age;
             }
+        }
+
+        // Navigation properties
+        public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<MedicalRecord> MedicalRecords { get; set; }
+        public virtual ICollection<Prescription> Prescriptions { get; set; }
+        public virtual ICollection<Invoice> Invoices { get; set; }
+
+        public Patient()
+        {
+            Appointments = new HashSet<Appointment>();
+            MedicalRecords = new HashSet<MedicalRecord>();
+            Prescriptions = new HashSet<Prescription>();
+            Invoices = new HashSet<Invoice>();
         }
     }
 }

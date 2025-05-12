@@ -79,6 +79,20 @@ namespace project_hospital_management_system.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} cannot be longer than {1} characters.")]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string SelectedRole { get; set; }
     }
 
     public class ResetPasswordViewModel

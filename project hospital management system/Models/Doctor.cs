@@ -1,4 +1,5 @@
 ﻿﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,5 +26,18 @@ namespace project_hospital_management_system.Models
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Contact Number")]
         public string Phone { get; set; }
+
+        // Navigation properties
+        public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<MedicalRecord> MedicalRecords { get; set; }
+        public virtual ICollection<Prescription> Prescriptions { get; set; }
+
+        public Doctor()
+        {
+            Appointments = new HashSet<Appointment>();
+            MedicalRecords = new HashSet<MedicalRecord>();
+            Prescriptions = new HashSet<Prescription>();
+        }
     }
 }

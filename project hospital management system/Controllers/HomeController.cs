@@ -33,5 +33,12 @@ namespace project_hospital_management_system.Controllers
 
             return View();
         }
+
+        public ActionResult Error()
+        {
+            ViewBag.Message = "An error occurred while processing your request.";
+
+            return View();
+        }
     }
 }

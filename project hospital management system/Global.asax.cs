@@ -35,7 +35,7 @@ namespace project_hospital_management_system
                 System.IO.Directory.CreateDirectory(dataDirectory);
             }
 
-            // Initialize the database
+            // Initialize the database with our custom initializer
             Database.SetInitializer(new DatabaseInitializer());
 
             // Force the database to be created/updated at application start
@@ -43,20 +43,9 @@ namespace project_hospital_management_system
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    if (!db.Database.Exists())
-                    {
-                        db.Database.Create();
-                        System.Diagnostics.Debug.WriteLine("Database created successfully.");
-                    }
-                    else
-                    {
-                        db.Database.Initialize(force: false);
-                        System.Diagnostics.Debug.WriteLine("Database initialized successfully.");
-                    }
-
-                    // Initialize roles and admin user
-                    RoleInitializer.Initialize(db);
-                    System.Diagnostics.Debug.WriteLine("Roles and admin user initialized successfully.");
+                    // This will trigger the Seed method in DatabaseInitializer
+                    db.Database.Initialize(force: true);
+                    System.Diagnostics.Debug.WriteLine("Database initialized successfully.");
                 }
             }
             catch (Exception ex)

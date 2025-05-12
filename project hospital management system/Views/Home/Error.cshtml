@@ -1,0 +1,35 @@
+@{
+    ViewBag.Title = "Error";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><i class="glyphicon glyphicon-exclamation-sign"></i> Error</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="text-center">
+                        <h1><i class="glyphicon glyphicon-warning-sign text-danger" style="font-size: 72px;"></i></h1>
+                        <h3>@ViewBag.Message</h3>
+                        <p>We apologize for the inconvenience. Our technical team has been notified of this issue and is working to resolve it.</p>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-home"></i> Return to Home Page
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-default" onclick="window.history.back();">
+                                    <i class="glyphicon glyphicon-arrow-left"></i> Go Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
