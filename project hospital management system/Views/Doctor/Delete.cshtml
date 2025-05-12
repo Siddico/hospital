@@ -1,0 +1,60 @@
+﻿﻿@model project_hospital_management_system.Models.Doctor
+
+@{
+    ViewBag.Title = "Delete Doctor";
+}
+
+<h2>Delete Doctor</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong> @ViewBag.ErrorMessage
+    </div>
+}
+
+<div class="alert alert-warning">
+    <strong>Warning!</strong> Are you sure you want to delete this doctor? This action cannot be undone.
+</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DoctorId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DoctorId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Specialization)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Specialization)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

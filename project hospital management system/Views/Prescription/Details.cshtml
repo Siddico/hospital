@@ -1,0 +1,100 @@
+﻿﻿@model project_hospital_management_system.Models.Prescription
+
+@{
+    ViewBag.Title = "Prescription Details";
+}
+
+<h2>Prescription Details</h2>
+
+<div>
+    <hr />
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Prescription Information</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.PrescriptionId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PrescriptionId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Patient.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Patient.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Doctor.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Doctor.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Doctor.Specialization)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Doctor.Specialization)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateIssued)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateIssued)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Medication</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Medication.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Medication.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Medication.Dose)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Medication.Dose)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Medication.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Medication.Description)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Instructions</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Html.DisplayFor(model => model.Instructions)</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.PrescriptionId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </div>
+</div>

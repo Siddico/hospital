@@ -1,0 +1,160 @@
+﻿﻿@model IEnumerable<project_hospital_management_system.Models.Prescription>
+
+@{
+    ViewBag.Title = "Patient Prescriptions";
+    var patient = ViewBag.Patient as project_hospital_management_system.Models.Patient;
+}
+
+<h2>Prescriptions for @patient.Name</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            @Html.ActionLink("Create New Prescription", "Create", new { patientId = patient.PatientId }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Back to Patient List", "Index", "Patient", null, new { @class = "btn btn-default" })
+        </p>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Success!</strong> @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Error!</strong> @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Patient Information</h3>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>Patient ID:</dt>
+            <dd>@patient.PatientId</dd>
+            
+            <dt>Name:</dt>
+            <dd>@patient.Name</dd>
+            
+            <dt>Gender:</dt>
+            <dd>@patient.Gender</dd>
+            
+            <dt>Date of Birth:</dt>
+            <dd>@patient.DateOfBirth.ToString("yyyy-MM-dd")</dd>
+            
+            <dt>Age:</dt>
+            <dd>@patient.Age</dd>
+            
+            <dt>Phone:</dt>
+            <dd>@patient.Phone</dd>
+            
+            <dt>Address:</dt>
+            <dd>@patient.Address</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Prescription History</h3>
+    </div>
+    <div class="panel-body">
+        @if (Model != null && Model.Any())
+        {
+            <div class="timeline">
+                @foreach (var prescription in Model)
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-date">
+                            @prescription.DateIssued.ToString("yyyy-MM-dd")
+                        </div>
+                        <div class="timeline-content panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <span class="label label-primary">@prescription.Medication.Name</span>
+                                    <small class="pull-right">Dr. @prescription.Doctor.Name (@prescription.Doctor.Specialization)</small>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <p><strong>Dose:</strong> @prescription.Medication.Dose</p>
+                                <p><strong>Instructions:</strong> @prescription.Instructions</p>
+                                
+                                <div class="btn-group">
+                                    @Html.ActionLink("Details", "Details", new { id = prescription.PrescriptionId }, new { @class = "btn btn-sm btn-info" })
+                                    @Html.ActionLink("Edit", "Edit", new { id = prescription.PrescriptionId }, new { @class = "btn btn-sm btn-default" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No prescriptions found for this patient.
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 18px;
+            height: 100%;
+            width: 4px;
+            background: #ddd;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-date {
+            position: absolute;
+            width: 40px;
+            left: 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .timeline-content {
+            margin-left: 60px;
+            padding: 0;
+            border-radius: 4px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Auto-hide alerts after 5 seconds
+            window.setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿﻿@model project_hospital_management_system.Models.Appointment
+
+@{
+    ViewBag.Title = "Appointment Details";
+}
+
+<h2>Appointment Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Specialization)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Specialization)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+    </dl>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.AppointmentId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </div>
+</div>

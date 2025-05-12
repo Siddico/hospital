@@ -1,0 +1,119 @@
+﻿﻿@model project_hospital_management_system.Models.Invoice
+
+@{
+    ViewBag.Title = "Invoice Details";
+}
+
+<h2>Invoice Details</h2>
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Invoice Information</h3>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.InvoiceId)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.InvoiceId)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.DateIssued)
+                        </dt>
+                        <dd>
+                            @Model.DateIssued.ToString("yyyy-MM-dd")
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </dt>
+                        <dd>
+                            <span class="label label-@Model.StatusColor">@Model.Status</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Patient Information</h3>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Patient.PatientId)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Patient.PatientId)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Patient.Name)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Patient.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Patient.Phone)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Patient.Phone)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Patient.Address)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Patient.Address)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Billing Details</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well">
+                        <h4 class="text-right">Total Amount: <strong>@Html.DisplayFor(model => model.TotalAmount)</strong></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.InvoiceId }, new { @class = "btn btn-primary" })
+        @if (Model.Status == "Pending")
+        {
+            <a href="#" class="btn btn-success" onclick="markAsPaid(@Model.InvoiceId); return false;">Mark as Paid</a>
+        }
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function markAsPaid(invoiceId) {
+            if (confirm("Are you sure you want to mark this invoice as paid?")) {
+                // In a real application, this would be an AJAX call to update the status
+                window.location.href = '@Url.Action("Edit", "Invoice")/' + invoiceId + '?status=Paid';
+            }
+        }
+    </script>
+}

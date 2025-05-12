@@ -1,0 +1,85 @@
+﻿﻿@model project_hospital_management_system.Models.MedicalRecord
+
+@{
+    ViewBag.Title = "Delete Medical Record";
+}
+
+<h2>Delete Medical Record</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong> @ViewBag.ErrorMessage
+    </div>
+}
+
+<div class="alert alert-warning">
+    <strong>Warning!</strong> Are you sure you want to delete this medical record? This action cannot be undone.
+</div>
+
+<div>
+    <hr />
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Record Information</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.RecordId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RecordId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Patient.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Patient.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Doctor.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Doctor.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RecordDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RecordDate)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Diagnosis</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Html.DisplayFor(model => model.Diagnosis)</p>
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Treatment</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Html.DisplayFor(model => model.Treatment)</p>
+        </div>
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

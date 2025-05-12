@@ -1,0 +1,115 @@
+﻿﻿@model project_hospital_management_system.Models.MedicalRecord
+
+@{
+    ViewBag.Title = "Medical Record Details";
+}
+
+<h2>Medical Record Details</h2>
+
+<div>
+    <hr />
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Record Information</h3>
+        </div>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.RecordId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RecordId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Patient.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Patient.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Doctor.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Doctor.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Doctor.Specialization)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Doctor.Specialization)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RecordDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RecordDate)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Diagnosis</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Html.DisplayFor(model => model.Diagnosis)</p>
+        </div>
+    </div>
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Treatment</h3>
+        </div>
+        <div class="panel-body">
+            <p>@Html.DisplayFor(model => model.Treatment)</p>
+        </div>
+    </div>
+
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Medications</h3>
+        </div>
+        <div class="panel-body">
+            @if (ViewBag.Medications != null && ((IEnumerable<project_hospital_management_system.Models.Medication>)ViewBag.Medications).Any())
+            {
+                <div class="row">
+                    @foreach (var medication in (IEnumerable<project_hospital_management_system.Models.Medication>)ViewBag.Medications)
+                    {
+                        <div class="col-md-4">
+                            <div class="well">
+                                <h4>@medication.Name</h4>
+                                <p><strong>Dose:</strong> @medication.Dose</p>
+                                @if (!string.IsNullOrEmpty(medication.Description))
+                                {
+                                    <p><small>@medication.Description</small></p>
+                                }
+                                <p>
+                                    @Html.ActionLink("Details", "Details", "Medication", new { id = medication.MedicationId }, new { @class = "btn btn-xs btn-info" })
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <p class="text-right">
+                    @Html.ActionLink("Manage Medications", "Index", "Medication", null, new { @class = "btn btn-sm btn-default" })
+                </p>
+            }
+            else
+            {
+                <p>No medications available.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.RecordId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+    </div>
+</div>

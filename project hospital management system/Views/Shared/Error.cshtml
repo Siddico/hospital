@@ -1,0 +1,65 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<div class="error-page">
+    <div class="alert alert-danger">
+        <h2><i class="glyphicon glyphicon-warning-sign"></i> An error occurred while processing your request.</h2>
+    </div>
+
+    <div class="well">
+        <h3>Error Details:</h3>
+
+        @if (Model != null && HttpContext.Current.IsDebuggingEnabled)
+        {
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Exception Details (Visible only in Debug mode)</h4>
+                </div>
+                <div class="panel-body">
+                    <p><strong>Controller:</strong> @Model.ControllerName</p>
+                    <p><strong>Action:</strong> @Model.ActionName</p>
+                    <p><strong>Exception:</strong> @Model.Exception.Message</p>
+
+                    @if (Model.Exception.InnerException != null)
+                    {
+                        <p><strong>Inner Exception:</strong> @Model.Exception.InnerException.Message</p>
+                    }
+
+                    <p><strong>Stack Trace:</strong></p>
+                    <pre>@Model.Exception.StackTrace</pre>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>
+                We apologize for the inconvenience. Our technical team has been notified of this issue and is working to resolve it.
+            </p>
+        }
+
+        <div class="row">
+            <div class="col-md-6">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-home"></i> Return to Home Page
+                </a>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-default" onclick="window.history.back();">
+                    <i class="glyphicon glyphicon-arrow-left"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Log the error to the console
+            console.error("An error occurred: @(Model != null ? Model.Exception.Message : "Unknown error")");
+        });
+    </script>
+}
