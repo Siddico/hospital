@@ -152,7 +152,11 @@ namespace project_hospital_management_system.Controllers
                 
                 return View(patient);
             }
+<<<<<<< HEAD
             catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException ex)
+=======
+            catch (DbUpdateConcurrencyException ex)
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
             {
                 // Handle concurrency conflicts
                 System.Diagnostics.Debug.WriteLine("Concurrency error in PatientController.Edit: " + ex.Message);

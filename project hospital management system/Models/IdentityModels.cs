@@ -36,6 +36,7 @@ namespace project_hospital_management_system.Models
         // Add DbSet for Patient model
         public DbSet<Patient> Patients { get; set; }
 
+<<<<<<< HEAD
         // Add DbSet for Doctor model
         public DbSet<Doctor> Doctors { get; set; }
 
@@ -54,6 +55,8 @@ namespace project_hospital_management_system.Models
         // Add DbSet for Invoice model
         public DbSet<Invoice> Invoices { get; set; }
 
+=======
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -78,6 +81,7 @@ namespace project_hospital_management_system.Models
                 .Property(p => p.Address)
                 .IsRequired()
                 .HasMaxLength(200);
+<<<<<<< HEAD
 
             // Configure Doctor entity
             modelBuilder.Entity<Doctor>()
@@ -94,6 +98,8 @@ namespace project_hospital_management_system.Models
                 .Property(d => d.Phone)
                 .IsRequired()
                 .HasMaxLength(20);
+=======
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
         }
     }
 }

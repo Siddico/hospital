@@ -5,9 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+<<<<<<< HEAD
 using System.Data.Entity;
 using System.IO;
 using project_hospital_management_system.Models; // Make sure this line is included
+=======
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
 
 namespace project_hospital_management_system
 {
@@ -19,6 +22,7 @@ namespace project_hospital_management_system
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+<<<<<<< HEAD
 
             // Set the DataDirectory to the App_Data folder
             string dataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
@@ -77,3 +81,8 @@ namespace project_hospital_management_system
         }
     }
 }
+=======
+        }
+    }
+}
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544

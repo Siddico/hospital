@@ -44,6 +44,7 @@
                     }
                 );
             }
+<<<<<<< HEAD
 
             // Add sample doctors if the Doctors table is empty
             if (!context.Doctors.Any())
@@ -251,6 +252,8 @@
                     );
                 }
             }
+=======
+>>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
         }
     }
 }
