@@ -4,6 +4,7 @@
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Transactions;
     using Models;
 
     internal sealed class Configuration : DbMigrationsConfiguration<project_hospital_management_system.Models.ApplicationDbContext>
@@ -11,7 +12,7 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = false;
+            AutomaticMigrationDataLossAllowed = true; // Allow data loss during migrations
             ContextKey = "project_hospital_management_system.Models.ApplicationDbContext";
         }
 
@@ -20,6 +21,14 @@
             // This method will be called after migrating to the latest version.
             // You can use the DbSet<T>.AddOrUpdate() helper extension method
             // to avoid creating duplicate seed data.
+
+            try
+            {
+                // Use a transaction to ensure data consistency
+                using (var transaction = new TransactionScope(TransactionScopeOption.Required,
+                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+                    TransactionScopeAsyncFlowOption.Enabled))
+                {
 
             // Add sample patients if the Patients table is empty
             if (!context.Patients.Any())
@@ -250,6 +259,24 @@
                         }
                     );
                 }
+            }
+
+                    // Save changes and complete the transaction
+                    context.SaveChanges();
+                    transaction.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                System.Diagnostics.Debug.WriteLine("Error in Seed method: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+
+                // Rethrow the exception to prevent database initialization
+                throw;
             }
         }
     }

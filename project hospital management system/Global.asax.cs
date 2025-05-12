@@ -36,7 +36,7 @@ namespace project_hospital_management_system
             }
 
             // Initialize the database with our custom initializer
-            Database.SetInitializer(new DatabaseInitializer());
+            Database.SetInitializer(new Migrations.DatabaseInitializer());
 
             // Force the database to be created/updated at application start
             try
@@ -54,6 +54,10 @@ namespace project_hospital_management_system
                 if (ex.InnerException != null)
                 {
                     System.Diagnostics.Debug.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Inner Inner Exception: " + ex.InnerException.InnerException.Message);
+                    }
                 }
             }
         }
