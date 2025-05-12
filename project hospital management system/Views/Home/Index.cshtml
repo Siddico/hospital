@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Hospital Management System</h1>
+    <p class="lead">Welcome to our comprehensive hospital management solution. Manage patients, appointments, and medical records with ease.</p>
+    <p>@Html.ActionLink("Manage Patients", "Index", "Patient", null, new { @class = "btn btn-primary btn-lg" })</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Patient Management</h3>
+            </div>
+            <div class="panel-body">
+                <p>Register new patients, update patient information, and manage patient records efficiently.</p>
+                <p>@Html.ActionLink("Manage Patients", "Index", "Patient", null, new { @class = "btn btn-default" })</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i> Appointments</h3>
+            </div>
+            <div class="panel-body">
+                <p>Schedule and manage patient appointments with doctors. Keep track of upcoming appointments.</p>
+                <p><a class="btn btn-default" href="#">Coming Soon</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> Medical Records</h3>
+            </div>
+            <div class="panel-body">
+                <p>Maintain comprehensive medical records for patients including diagnoses, treatments, and prescriptions.</p>
+                <p><a class="btn btn-default" href="#">Coming Soon</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Staff Management</h3>
+            </div>
+            <div class="panel-body">
+                <p>Manage hospital staff including doctors, nurses, and administrative personnel.</p>
+                <p><a class="btn btn-default" href="#">Coming Soon</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="glyphicon glyphicon-usd"></i> Billing & Invoicing</h3>
+            </div>
+            <div class="panel-body">
+                <p>Generate and manage patient bills, invoices, and payment records.</p>
+                <p><a class="btn btn-default" href="#">Coming Soon</a></p>
+            </div>
+        </div>
+    </div>
+</div>

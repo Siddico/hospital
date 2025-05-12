@@ -1,0 +1,41 @@
+﻿﻿@{
+    ViewBag.Title = "Access Denied";
+}
+
+<div class="error-page">
+    <div class="alert alert-danger">
+        <h2><i class="glyphicon glyphicon-ban-circle"></i> 403 - Access Denied</h2>
+    </div>
+
+    <div class="well">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>You do not have permission to access this resource.</h3>
+                <p>Please contact your system administrator if you believe this is an error.</p>
+                
+                @if (!string.IsNullOrEmpty(ViewBag.Message))
+                {
+                    <div class="alert alert-info">
+                        <p><strong>Additional Information:</strong> @ViewBag.Message</p>
+                    </div>
+                }
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="glyphicon glyphicon-lock" style="font-size: 100px; color: #d9534f; margin: 20px;"></i>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-home"></i> Return to Home Page
+                </a>
+            </div>
+            <div class="col-md-6 text-right">
+                <button class="btn btn-default" onclick="window.history.back();">
+                    <i class="glyphicon glyphicon-arrow-left"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
