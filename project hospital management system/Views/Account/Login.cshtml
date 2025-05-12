@@ -52,8 +52,34 @@
         </section>
     </div>
     <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        <section id="loginInfo">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Test Accounts</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">Admin</h4>
+                            <p class="list-group-item-text">Email: admin@gmail.com</p>
+                            <p class="list-group-item-text">Password: Admin12345678</p>
+                        </div>
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">Doctor</h4>
+                            <p class="list-group-item-text">Email: doctor@hospital.com</p>
+                            <p class="list-group-item-text">Password: Doctor12345678</p>
+                        </div>
+                        <div class="list-group-item">
+                            <h4 class="list-group-item-heading">Patient</h4>
+                            <p class="list-group-item-text">Email: patient@hospital.com</p>
+                            <p class="list-group-item-text">Password: Patient12345678</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning">
+                        <small>These are test accounts for demonstration purposes only. In a production environment, this information would not be displayed.</small>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>

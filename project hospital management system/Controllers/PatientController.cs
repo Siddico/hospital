@@ -27,10 +27,10 @@ namespace project_hospital_management_system.Controllers
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Index: " + ex.Message);
-                
+
                 // Add error message to TempData to display to the user
                 TempData["ErrorMessage"] = "An error occurred while retrieving patient data. Please try again later.";
-                
+
                 // Return an empty list to avoid null reference exceptions in the view
                 return View(new List<Patient>());
             }
@@ -45,24 +45,24 @@ namespace project_hospital_management_system.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                
+
                 Patient patient = db.Patients.Find(id);
-                
+
                 if (patient == null)
                 {
                     return HttpNotFound();
                 }
-                
+
                 return View(patient);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Details: " + ex.Message);
-                
+
                 // Add error message to TempData
                 TempData["ErrorMessage"] = "An error occurred while retrieving patient details. Please try again later.";
-                
+
                 // Redirect to index
                 return RedirectToAction("Index");
             }
@@ -88,17 +88,17 @@ namespace project_hospital_management_system.Controllers
                     TempData["SuccessMessage"] = "Patient created successfully!";
                     return RedirectToAction("Index");
                 }
-                
+
                 return View(patient);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Create: " + ex.Message);
-                
+
                 // Add the error to ModelState
                 ModelState.AddModelError("", "An error occurred while creating the patient. Please try again.");
-                
+
                 return View(patient);
             }
         }
@@ -112,24 +112,24 @@ namespace project_hospital_management_system.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                
+
                 Patient patient = db.Patients.Find(id);
-                
+
                 if (patient == null)
                 {
                     return HttpNotFound();
                 }
-                
+
                 return View(patient);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Edit: " + ex.Message);
-                
+
                 // Add error message to TempData
                 TempData["ErrorMessage"] = "An error occurred while retrieving patient data for editing. Please try again later.";
-                
+
                 // Redirect to index
                 return RedirectToAction("Index");
             }
@@ -149,22 +149,18 @@ namespace project_hospital_management_system.Controllers
                     TempData["SuccessMessage"] = "Patient updated successfully!";
                     return RedirectToAction("Index");
                 }
-                
+
                 return View(patient);
             }
-<<<<<<< HEAD
             catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException ex)
-=======
-            catch (DbUpdateConcurrencyException ex)
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
             {
                 // Handle concurrency conflicts
                 System.Diagnostics.Debug.WriteLine("Concurrency error in PatientController.Edit: " + ex.Message);
-                
+
                 var entry = ex.Entries.Single();
                 var clientValues = (Patient)entry.Entity;
                 var databaseEntry = entry.GetDatabaseValues();
-                
+
                 if (databaseEntry == null)
                 {
                     ModelState.AddModelError("", "Unable to save changes. The patient was deleted by another user.");
@@ -173,17 +169,17 @@ namespace project_hospital_management_system.Controllers
                 {
                     ModelState.AddModelError("", "The record you attempted to edit was modified by another user after you. Please refresh and try again.");
                 }
-                
+
                 return View(patient);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Edit: " + ex.Message);
-                
+
                 // Add the error to ModelState
                 ModelState.AddModelError("", "An error occurred while updating the patient. Please try again.");
-                
+
                 return View(patient);
             }
         }
@@ -197,29 +193,29 @@ namespace project_hospital_management_system.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                
+
                 if (saveChangesError.GetValueOrDefault())
                 {
                     ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
                 }
-                
+
                 Patient patient = db.Patients.Find(id);
-                
+
                 if (patient == null)
                 {
                     return HttpNotFound();
                 }
-                
+
                 return View(patient);
             }
             catch (Exception ex)
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Delete: " + ex.Message);
-                
+
                 // Add error message to TempData
                 TempData["ErrorMessage"] = "An error occurred while retrieving patient data for deletion. Please try again later.";
-                
+
                 // Redirect to index
                 return RedirectToAction("Index");
             }
@@ -242,7 +238,7 @@ namespace project_hospital_management_system.Controllers
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.DeleteConfirmed: " + ex.Message);
-                
+
                 // Redirect to Delete GET action with error flag
                 return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
@@ -258,7 +254,7 @@ namespace project_hospital_management_system.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    patients = patients.Where(p => p.Name.Contains(searchString) 
+                    patients = patients.Where(p => p.Name.Contains(searchString)
                                                 || p.Phone.Contains(searchString)
                                                 || p.Address.Contains(searchString));
                 }
@@ -269,10 +265,10 @@ namespace project_hospital_management_system.Controllers
             {
                 // Log the exception
                 System.Diagnostics.Debug.WriteLine("Error in PatientController.Search: " + ex.Message);
-                
+
                 // Add error message to TempData
                 TempData["ErrorMessage"] = "An error occurred while searching for patients. Please try again later.";
-                
+
                 // Return an empty list to avoid null reference exceptions in the view
                 return View("Index", new List<Patient>());
             }

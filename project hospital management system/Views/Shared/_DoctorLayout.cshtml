@@ -1,0 +1,134 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Hospital Management System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        /* Doctor-specific styles */
+        .doctor-sidebar {
+            background-color: #2c3e50;
+            padding: 0;
+            min-height: calc(100vh - 50px);
+        }
+        
+        .doctor-sidebar .nav > li > a {
+            color: #ecf0f1;
+            padding: 15px;
+        }
+        
+        .doctor-sidebar .nav > li > a:hover,
+        .doctor-sidebar .nav > li > a:focus,
+        .doctor-sidebar .nav > li.active > a {
+            color: #fff;
+            background-color: #1a242f;
+        }
+        
+        .doctor-sidebar .nav > li > a > i {
+            margin-right: 10px;
+        }
+        
+        .doctor-content {
+            padding: 20px;
+        }
+        
+        .huge {
+            font-size: 40px;
+        }
+        
+        .doctor-dashboard .panel-heading {
+            min-height: 100px;
+        }
+        
+        .doctor-dashboard .panel-heading i {
+            font-size: 40px;
+        }
+        
+        .doctor-dashboard .panel-footer {
+            color: #333;
+        }
+        
+        .doctor-dashboard .panel-footer:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: #2c3e50; border-color: #1a242f;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Hospital Management System", "Index", "DoctorDashboard", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="glyphicon glyphicon-user"></i> Dr. @User.Identity.Name <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index", "Manage")"><i class="glyphicon glyphicon-cog"></i> Account Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="glyphicon glyphicon-log-out"></i> Log off</a>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 doctor-sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" && ViewContext.RouteData.Values["Controller"].ToString() == "DoctorDashboard" ? "active" : "")">
+                        <a href="@Url.Action("Index", "DoctorDashboard")"><i class="glyphicon glyphicon-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "MyPatients" ? "active" : "")">
+                        <a href="@Url.Action("MyPatients", "DoctorDashboard")"><i class="glyphicon glyphicon-user"></i> My Patients</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "MyAppointments" ? "active" : "")">
+                        <a href="@Url.Action("MyAppointments", "DoctorDashboard")"><i class="glyphicon glyphicon-calendar"></i> My Appointments</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "MedicalRecord" ? "active" : "")">
+                        <a href="@Url.Action("Index", "MedicalRecord")"><i class="glyphicon glyphicon-list-alt"></i> Medical Records</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Prescription" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Prescription")"><i class="glyphicon glyphicon-file"></i> Prescriptions</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Medication" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Medication")"><i class="glyphicon glyphicon-plus"></i> Medications</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")"><i class="glyphicon glyphicon-home"></i> Back to Main Site</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 doctor-content">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Hospital Management System</p>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

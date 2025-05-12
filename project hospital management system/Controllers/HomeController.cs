@@ -26,5 +26,12 @@ namespace project_hospital_management_system.Controllers
 
             return View();
         }
+
+        public ActionResult AccessDenied()
+        {
+            ViewBag.Message = "You do not have permission to access this resource.";
+
+            return View();
+        }
     }
 }

@@ -10,12 +10,39 @@ namespace project_hospital_management_system.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string ProfilePicture { get; set; }
+        public DateTime? DateCreated { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+        public bool IsActive { get; set; }
+        public int? DoctorId { get; set; }
+        public int? PatientId { get; set; }
+
+        // Navigation properties
+        public virtual Doctor Doctor { get; set; }
+        public virtual Patient Patient { get; set; }
+
+        public ApplicationUser()
+        {
+            DateCreated = DateTime.Now;
+            IsActive = true;
+        }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
+        }
+
+        public string FullName
+        {
+            get
+            {
+                return $"{FirstName} {LastName}";
+            }
         }
     }
 
@@ -24,8 +51,7 @@ namespace project_hospital_management_system.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            // Configure Entity Framework to throw exceptions when there are database errors
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>());
+            // Database initialization is handled in Global.asax.cs
         }
 
         public static ApplicationDbContext Create()
@@ -36,7 +62,6 @@ namespace project_hospital_management_system.Models
         // Add DbSet for Patient model
         public DbSet<Patient> Patients { get; set; }
 
-<<<<<<< HEAD
         // Add DbSet for Doctor model
         public DbSet<Doctor> Doctors { get; set; }
 
@@ -55,8 +80,8 @@ namespace project_hospital_management_system.Models
         // Add DbSet for Invoice model
         public DbSet<Invoice> Invoices { get; set; }
 
-=======
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
+        // Add DbSet for Dashboard statistics
+        public DbSet<DashboardStatistic> DashboardStatistics { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -81,7 +106,6 @@ namespace project_hospital_management_system.Models
                 .Property(p => p.Address)
                 .IsRequired()
                 .HasMaxLength(200);
-<<<<<<< HEAD
 
             // Configure Doctor entity
             modelBuilder.Entity<Doctor>()
@@ -98,8 +122,6 @@ namespace project_hospital_management_system.Models
                 .Property(d => d.Phone)
                 .IsRequired()
                 .HasMaxLength(20);
-=======
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
         }
     }
 }

@@ -5,12 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-<<<<<<< HEAD
 using System.Data.Entity;
 using System.IO;
-using project_hospital_management_system.Models; // Make sure this line is included
-=======
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
+using project_hospital_management_system.Models;
+using project_hospital_management_system.Migrations;
 
 namespace project_hospital_management_system
 {
@@ -22,7 +20,6 @@ namespace project_hospital_management_system
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-<<<<<<< HEAD
 
             // Set the DataDirectory to the App_Data folder
             string dataDirectory = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
@@ -39,7 +36,7 @@ namespace project_hospital_management_system
             }
 
             // Initialize the database
-            Database.SetInitializer(new DatabaseInitializer()); // Use it directly since you've included the namespace
+            Database.SetInitializer(new DatabaseInitializer());
 
             // Force the database to be created/updated at application start
             try
@@ -56,6 +53,10 @@ namespace project_hospital_management_system
                         db.Database.Initialize(force: false);
                         System.Diagnostics.Debug.WriteLine("Database initialized successfully.");
                     }
+
+                    // Initialize roles and admin user
+                    RoleInitializer.Initialize(db);
+                    System.Diagnostics.Debug.WriteLine("Roles and admin user initialized successfully.");
                 }
             }
             catch (Exception ex)
@@ -81,8 +82,3 @@ namespace project_hospital_management_system
         }
     }
 }
-=======
-        }
-    }
-}
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544

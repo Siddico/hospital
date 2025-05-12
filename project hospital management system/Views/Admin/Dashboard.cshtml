@@ -1,0 +1,261 @@
+﻿﻿@model project_hospital_management_system.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-dashboard">
+    <div class="row">
+        <div class="col-md-12">
+            <h1><i class="glyphicon glyphicon-dashboard"></i> Admin Dashboard</h1>
+            <hr />
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong> @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Error!</strong> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- System Statistics -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="glyphicon glyphicon-user fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalPatients</div>
+                            <div>Patients</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "Patient")">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="glyphicon glyphicon-user fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalDoctors</div>
+                            <div>Doctors</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "Doctor")">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="glyphicon glyphicon-calendar fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalAppointments</div>
+                            <div>Appointments</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "Appointment")">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="glyphicon glyphicon-usd fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">@Model.TotalInvoices</div>
+                            <div>Invoices</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "Invoice")">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="glyphicon glyphicon-circle-arrow-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial Statistics -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-usd"></i> Financial Overview</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="well well-sm text-center">
+                                <h4>Total Revenue</h4>
+                                <h2>@String.Format("{0:C2}", Model.TotalRevenue)</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="well well-sm text-center">
+                                <h4>Pending Payments</h4>
+                                <h2>@String.Format("{0:C2}", Model.PendingPayments)</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="well well-sm text-center">
+                                <h4>Overdue Payments</h4>
+                                <h2>@String.Format("{0:C2}", Model.OverduePayments)</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-calendar"></i> Recent Appointments</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RecentAppointments != null && Model.RecentAppointments.Any())
+                                {
+                                    foreach (var appointment in Model.RecentAppointments)
+                                    {
+                                        <tr>
+                                            <td>@appointment.Patient.Name</td>
+                                            <td>@appointment.Doctor.Name</td>
+                                            <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>@appointment.Status</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center">No recent appointments found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <a href="@Url.Action("Index", "Appointment")">View All Appointments <i class="glyphicon glyphicon-circle-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-usd"></i> Recent Invoices</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RecentInvoices != null && Model.RecentInvoices.Any())
+                                {
+                                    foreach (var invoice in Model.RecentInvoices)
+                                    {
+                                        <tr>
+                                            <td>@invoice.Patient.Name</td>
+                                            <td>@invoice.DateIssued.ToString("yyyy-MM-dd")</td>
+                                            <td>@String.Format("{0:C2}", invoice.TotalAmount)</td>
+                                            <td><span class="label label-@invoice.StatusColor">@invoice.Status</span></td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center">No recent invoices found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <a href="@Url.Action("Index", "Invoice")">View All Invoices <i class="glyphicon glyphicon-circle-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Auto-hide alerts after 5 seconds
+            window.setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+    </script>
+}

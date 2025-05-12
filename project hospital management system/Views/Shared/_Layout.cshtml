@@ -22,16 +22,49 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Patients", "Index", "Patient")</li>
-<<<<<<< HEAD
-                    <li>@Html.ActionLink("Doctors", "Index", "Doctor")</li>
-                    <li>@Html.ActionLink("Appointments", "Index", "Appointment")</li>
-                    <li>@Html.ActionLink("Medical Records", "Index", "MedicalRecord")</li>
-                    <li>@Html.ActionLink("Medications", "Index", "Medication")</li>
-                    <li>@Html.ActionLink("Prescriptions", "Index", "Prescription")</li>
-                    <li>@Html.ActionLink("Invoices", "Index", "Invoice")</li>
-=======
->>>>>>> 00a11ec54d2ce5d42722424882e545991dc44544
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Admin Dashboard", "Dashboard", "Admin")</li>
+                    }
+
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <li>@Html.ActionLink("Doctor Dashboard", "Index", "DoctorDashboard")</li>
+                    }
+
+                    @if (User.IsInRole("Patient"))
+                    {
+                        <li>@Html.ActionLink("Patient Dashboard", "Index", "PatientDashboard")</li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("Receptionist"))
+                    {
+                        <li>@Html.ActionLink("Patients", "Index", "Patient")</li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Receptionist"))
+                    {
+                        <li>@Html.ActionLink("Doctors", "Index", "Doctor")</li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("Receptionist"))
+                    {
+                        <li>@Html.ActionLink("Appointments", "Index", "Appointment")</li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor") || User.IsInRole("Nurse"))
+                    {
+                        <li>@Html.ActionLink("Medical Records", "Index", "MedicalRecord")</li>
+                        <li>@Html.ActionLink("Medications", "Index", "Medication")</li>
+                        <li>@Html.ActionLink("Prescriptions", "Index", "Prescription")</li>
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Accountant"))
+                    {
+                        <li>@Html.ActionLink("Invoices", "Index", "Invoice")</li>
+                    }
+
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>

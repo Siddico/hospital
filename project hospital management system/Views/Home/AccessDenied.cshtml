@@ -1,0 +1,27 @@
+﻿﻿@{
+    ViewBag.Title = "Access Denied";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><i class="glyphicon glyphicon-exclamation-sign"></i> Access Denied</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="text-center">
+                        <h1><i class="glyphicon glyphicon-ban-circle text-danger" style="font-size: 72px;"></i></h1>
+                        <h3>@ViewBag.Message</h3>
+                        <p>You do not have the necessary permissions to access this area.</p>
+                        <p>If you believe this is an error, please contact the system administrator.</p>
+                        <hr />
+                        <p>
+                            @Html.ActionLink("Return to Home Page", "Index", "Home", null, new { @class = "btn btn-primary" })
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
